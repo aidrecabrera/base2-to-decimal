@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Base-2 to Base-10 Convert with Steps
 
-## Getting Started
+### There are two Methods for Binary to Decimal Conversion
 
-First, run the development server:
+#### Method 1: `binaryToDecimalBad`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Warning:** Don't use this function if you are using a dynamic input! It's a bad example of recursion and will cause a stack overflow for large numbers.
+
+The first method, `binaryToDecimalBad`, is a recursive approach to convert binary numbers to decimal. However, I encountered a problem when doing a dynamic input since it's inefficient and prone to causing stack overflow errors for large binary numbers.
+
+This function is only recommended if and only if the user is required to input the value and click a button that will calculate it, instead of calculating it on-the-go.
+
+```typescript
+export function binaryToDecimalBad(initial: number): number {
+  if (initial === 0) return 0;
+  const lastDigit = initial % 10;
+  const remainingDigits = Math.floor(initial / 10);
+  return lastDigit + 2 * binaryToDecimalBad(remainingDigits);
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Take the leftmost digit of your initial number. Multiply it by 2.
+2. Add the next digit of the binary number. The sum will be your new "initial number".
+3. Keep repeating these steps, each time first multiplying by 2 and then adding the last digit.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Method 2: `binaryToDecimalWithSteps`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```typescript
+/**
+ * Function to convert a binary number to decimal with step by step explanation.
+ * @param {number} binary - The binary number to be converted.
+ * @return {Array} steps - An array of objects, each containing a step description and the value at that step.
+ */
+export function binaryToDecimalWithSteps(
+  binary: number
+): { step: string; value: number }[] {
+  let decimal = 0;
+  let steps = [];
+  let binaryString = binary.toString();
 
-## Learn More
+  for (let i = 0; i < binaryString.length; i++) {
+    // Convert the current digit to a number.
+    let digit = Number(binaryString[i]);
 
-To learn more about Next.js, take a look at the following resources:
+    // Store the current total before adding the new digit.
+    let previousTotal = decimal;
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    // Add the current digit to the total.
+    decimal += digit;
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    let step = "";
 
-## Deploy on Vercel
+    if (i === 0) {
+      // If it's the first digit.
+      step = `Step ${i + 1}: ${digit} x 2 = ${decimal * 2}`;
+    } else if (i === binaryString.length - 1) {
+      // If it's the last digit.
+      step = `Step ${i + 1}: ${previousTotal} + ${digit} = ${decimal}`;
+    } else {
+      // For other digits, the step is the previous total plus the digit, all times 2.
+      step = `Step ${i + 1}: (${previousTotal} + ${digit}) x 2 = ${
+        decimal * 2
+      }`;
+    }
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    // Multiply the total by 2 to get ready for the next digit.
+    decimal *= 2;
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    steps.push({ step: step, value: decimal });
+  }
+
+  // Divide the final total by 2 to get the decimal equivalent of the binary number.
+  decimal /= 2;
+
+  // Add the final step to the steps array.
+  steps.push({
+    step: `Binary ${binary} corresponds to ${decimal} in the decimal system.`,
+    value: decimal,
+  });
+
+  // Return the steps array.
+  // Kindly refer to page.tsx for the implementation.
+  return steps;
+}
+```
+
+The second method, `binaryToDecimalWithSteps`, offers a better solution. It's an iterative approach that processes each digit of the binary number individually, avoiding potential stack overflow issues.
+
+Notice that there is a process where it returns the steps, which is a feature that provides a step-by-step breakdown of the conversion process. This is to provide an informative result.
+
+While both methods achieve the same goal of binary to decimal conversion, the second method is preferred due to its efficiency, reliability, and clarity. In this case, it solved my stackoverflow problem when I implemented the on-the-go calculation feature.
+
+That's all! 👀
