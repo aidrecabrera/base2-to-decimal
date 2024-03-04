@@ -5,6 +5,10 @@ import { binaryToDecimalWithSteps } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+const MotionMain = motion.main;
+const MotionDiv = motion.div;
+const MotionH1 = motion.h1;
+
 export default function Home() {
   useEffect(() => {
     document.documentElement.classList.add("dark");
@@ -44,20 +48,20 @@ export default function Home() {
   };
 
   return (
-    <motion.main
+    <MotionMain
       className="flex flex-col items-center justify-center h-screen"
       variants={containerVariants}
       initial="hidden"
       animate="show"
     >
-      <motion.div
+      <MotionDiv
         className="flex flex-col gap-4 justify-center"
         variants={childVariants}
       >
-        <motion.h1 className="w-full text-center" variants={childVariants}>
+        <MotionH1 className="w-full text-center" variants={childVariants}>
           {decimal !== null ? `Decimal: ${decimal}` : "Binary to Decimal"}
-        </motion.h1>
-        <motion.div variants={childVariants}>
+        </MotionH1>
+        <MotionDiv variants={childVariants}>
           <Input
             autoComplete="off"
             placeholder="Binary"
@@ -66,13 +70,13 @@ export default function Home() {
               converter(e.target.value);
             }}
           />
-        </motion.div>
+        </MotionDiv>
         {steps.map((step, index) => (
-          <motion.div key={index} variants={childVariants}>
+          <MotionDiv key={index} variants={childVariants}>
             <p>{step.step}</p>
-          </motion.div>
+          </MotionDiv>
         ))}
-      </motion.div>
-    </motion.main>
+      </MotionDiv>
+    </MotionMain>
   );
 }
