@@ -3,6 +3,7 @@
 
 https://github.com/aidrecabrera/base2-to-decimal/assets/61798731/c319dfe1-fb7d-418b-87af-f844fec14b83
 
+You can check the converter here: [Base-10 to Decimal](https://base2-to-decimal.vercel.app/)
 
 ### There are two Methods for Binary to Decimal Conversion
 
