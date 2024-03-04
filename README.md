@@ -1,5 +1,9 @@
 # Base-2 to Base-10 Convert with Steps
 
+
+https://github.com/aidrecabrera/base2-to-decimal/assets/61798731/c319dfe1-fb7d-418b-87af-f844fec14b83
+
+
 ### There are two Methods for Binary to Decimal Conversion
 
 #### Method 1: `binaryToDecimalBad`
